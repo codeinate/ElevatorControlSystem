@@ -18,23 +18,25 @@ namespace ElevatorControlSystem.Controllers
         [HttpPost("service/{floor}")]
         public ElevatorResponse EnqueueNewJob(Direction direction, int floor)
         {
-            // if direction = current, add to current queue
-            //return new int() { Floor = 1 };
-            return new ElevatorResponse(floor);
+            int added = _elevatorService.AddJob(direction, floor);
+
+            return new ElevatorResponse(added);
         }
 
         //A person requests that they be brought to a floor
         [HttpPost("job/{floor}")]
         public ElevatorResponse AddElevatorJob(int floor)
         {
+            _elevatorService.AddJob(floor);
+
             return new ElevatorResponse(floor);
         }
 
         //An elevator car requests all floors that it’s current passengers are servicing(e.g.to light up the buttons that show which floors the car is going to)
         [HttpGet("jobs/all")]
-        public int[] GetAllElevatorJobs()
+        public IEnumerable<int> GetAllElevatorJobs()
         {
-            return new[] { 0, 1, 2 };
+            return _elevatorService.GetAllJobs();
         }
 
         //An elevator car requests the next floor it needs to service
@@ -48,6 +50,8 @@ namespace ElevatorControlSystem.Controllers
         [HttpPut("jobs/complete")]
         public ElevatorResponse ElevatorCompleteJob()
         {
+            _elevatorService.CompleteJob();
+
             return new ElevatorResponse();
         }
     }

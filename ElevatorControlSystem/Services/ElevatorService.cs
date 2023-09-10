@@ -4,23 +4,41 @@ namespace ElevatorControlSystem.Services
 {
     public class ElevatorService : IElevatorService
     {
-        private static readonly int topFloor = 30;
+        private static int topFloor = 30;
 
-        private static readonly int currentFloor = 0;
+        private static int currentFloor = 0;
+
+        private static Direction direction = Direction.Up; 
 
         private static readonly List<int> upJobs = new();
         
         private static readonly List<int> downJobs = new();
 
-        public int AddFloor(Direction direction, int floor)
+        public int AddJob(int floor)
         {
-            if (direction == Direction.Up)
+            return AddJob(direction, floor);
+        }
+
+        public int AddJob(Direction direction, int floor)
+        {
+            return addJobToQueue(direction, floor);
+        }
+
+        private static int addJobToQueue(Direction direction, int floor)
+        {
+            if (floor > topFloor)
             {
-                upJobs.Add(floor);
+                return -1;
             }
-            else
+
+            switch (direction)
             {
-                downJobs.Add(floor);
+                case Direction.Up:
+                    upJobs.Add(floor);
+                    break;
+                case Direction.Down:
+                    downJobs.Add(floor);
+                    break;
             }
 
             return floor;
