@@ -1,4 +1,5 @@
 ﻿using ElevatorControlSystem.Controllers.Models;
+using ElevatorControlSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElevatorControlSystem.Controllers
@@ -7,6 +8,13 @@ namespace ElevatorControlSystem.Controllers
     [Route("api/[controller]")]
     public class ElevatorController : ControllerBase
     {
+        ElevatorService _elevatorService;
+
+        public ElevatorController(ElevatorService elevatorService)
+        {
+            _elevatorService = elevatorService;
+        }
+
         [HttpPost("service/{floor}")]
         public ElevatorResponse EnqueueNewJob(Direction direction, int floor)
         {
