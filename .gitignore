@@ -6,3 +6,4 @@
 /ElevatorControlSystem/obj
 /.vs/ElevatorControlSystem
 /ElevatorControlSystem.Contracts/obj
+/ElevatorControlSystem.Contracts/bin/Debug/net7.0

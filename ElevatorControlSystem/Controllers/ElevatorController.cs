@@ -4,39 +4,40 @@ using Microsoft.AspNetCore.Mvc;
 namespace ElevatorControlSystem.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ElevatorController : ControllerBase
     {
-        [HttpPost(Name = "service/{floor}")]
-        public ElevatorResponse EnqueueNewJob(RequestCaller requestCaller, Direction direction, int Floor)
+        [HttpPost("service/{floor}")]
+        public ElevatorResponse EnqueueNewJob(Direction direction, int floor)
         {
             // if direction = current, add to current queue
-            return new ElevatorResponse() { Floor = 1 };
+            //return new int() { Floor = 1 };
+            return new ElevatorResponse(floor);
         }
 
         //A person requests that they be brought to a floor
-        [HttpPost(Name = "job/{floor}")]
-        public ElevatorResponse AddElevatorJob(string floor)
+        [HttpPost("job/{floor}")]
+        public ElevatorResponse AddElevatorJob(int floor)
         {
-            return new ElevatorResponse();
+            return new ElevatorResponse(floor);
         }
 
         //An elevator car requests all floors that it’s current passengers are servicing(e.g.to light up the buttons that show which floors the car is going to)
-        [HttpGet(Name = "jobs/all")]
-        public ElevatorResponse GetAllElevatorJobs()
+        [HttpGet("jobs/all")]
+        public int[] GetAllElevatorJobs()
+        {
+            return new[] { 0, 1, 2 };
+        }
+
+        //An elevator car requests the next floor it needs to service
+        [HttpGet("jobs/next")]
+        public ElevatorResponse GetNextElevatorJob()
         {
             return new ElevatorResponse();
         }
 
         //An elevator car requests the next floor it needs to service
-        [HttpGet(Name = "jobs/next")]
-        public ElevatorResponse GetAllNextElevatorJob()
-        {
-            return new ElevatorResponse();
-        }
-
-        //An elevator car requests the next floor it needs to service
-        [HttpPut(Name = "jobs/complete")]
+        [HttpPut("jobs/complete")]
         public ElevatorResponse ElevatorCompleteJob()
         {
             return new ElevatorResponse();
