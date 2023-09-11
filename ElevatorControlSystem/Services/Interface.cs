@@ -1,25 +1,20 @@
 ﻿using ElevatorControlSystem.Controllers.Models;
+using ErrorOr;
 
 namespace ElevatorControlSystem.Services
 {
     public interface IElevatorService
     {
-        /// <summary>
-        /// Adds a job to the elevator tasks. Takes a direction from outside the elevator
-        /// </summary>
-        /// <param name="direction"></param>
-        /// <param name="floor"></param>
-        /// <returns></returns>
-        int AddJob(Direction direction, int floor);
+        ErrorOr<bool> AddJob(Direction direction, int floor);
 
-        int AddJob(int floor);
+        ErrorOr<bool> AddJob(int floor);
 
-        int GetCurrentFloor();
+        ErrorOr<int> GetCurrentFloor();
 
-        int GetNextJob();
+        ErrorOr<int> GetNextJob();
 
-        IEnumerable<int> GetAllJobs();
+        ErrorOr<IEnumerable<int>> GetAllJobs();
 
-        bool CompleteJob(int floor);
+        ErrorOr<bool> CompleteJob(int floor);
     }
 }

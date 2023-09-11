@@ -1,4 +1,6 @@
 ﻿using ElevatorControlSystem.Controllers.Models;
+using ElevatorControlSystem.ServiceErrors;
+using ErrorOr;
 
 namespace ElevatorControlSystem.Services
 {
@@ -6,47 +8,61 @@ namespace ElevatorControlSystem.Services
     {
         private static readonly int topFloor = 30;
 
-        private static readonly int currentFloor = 0;
+        private static int currentFloor = 0;
 
-        private static readonly Direction currentDirection = Direction.Up;
+        private static Direction currentDirection = Direction.Up;
 
         private static readonly List<int> upJobs = new();
         
         private static readonly List<int> downJobs = new();
 
-        public int AddJob(int floor)
+        public ErrorOr<bool> AddJob(Direction direction, int floor)
+        {
+            var added = addJobToQueue(direction, floor);
+
+            if (added == -1) return Errors.Elevator.OutofRange;
+
+            return true;
+        }
+
+        public ErrorOr<bool> AddJob(int floor)
         {
             return AddJob(currentDirection, floor);
         }
 
-        public int AddJob(Direction direction, int floor)
-        {
-            return addJobToQueue(direction, floor);
-        }
-
-        public int GetCurrentFloor()
+        public ErrorOr<int> GetCurrentFloor()
         {
             return currentFloor;
         }
 
-        public int GetNextJob()
+        public ErrorOr<int> GetNextJob()
         {
-            return currentFloor;
+            List<int> allJobs = combineAllJobs();
+
+            Random rnd = new();
+
+            return allJobs[rnd.Next(allJobs.Count)];
         }
 
-        public IEnumerable<int> GetAllJobs()
+        public ErrorOr<IEnumerable<int>> GetAllJobs()
+        {
+            return combineAllJobs();
+        }
+
+        private static List<int> combineAllJobs()
         {
             List<int> allJobs = new();
 
             allJobs.AddRange(upJobs);
             allJobs.AddRange(downJobs);
-
-            return allJobs.Distinct();
+            return allJobs;
         }
 
-        public bool CompleteJob(int floor)
+        public ErrorOr<bool> CompleteJob(int floor)
         {
             List<int> jobs = GetDirection();
+
+            currentFloor = floor;
 
             return jobs.Remove(floor);
         }
