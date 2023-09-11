@@ -53,11 +53,6 @@ namespace ElevatorControlSystem.Services
             return combineAllJobs();
         }
 
-        public ErrorOr<IEnumerable<int>> GetAllJobs()
-        {
-            return combineAllJobs();
-        }
-
         private List<int> combineAllJobs()
         {
             List<int> allJobs = new();
@@ -94,14 +89,11 @@ namespace ElevatorControlSystem.Services
         {
             direction ??= currentDirection;
 
-            switch (direction)
+            return direction switch
             {
-                case Direction.Down:
-                    return downJobs;
-                case Direction.Up:
-                default: 
-                    return upJobs;
-            }
+                Direction.Down => downJobs,
+                _ => upJobs,
+            };
         }
     }
 }
