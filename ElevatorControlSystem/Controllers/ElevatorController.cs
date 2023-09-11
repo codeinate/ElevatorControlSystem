@@ -24,7 +24,11 @@ namespace ElevatorControlSystem.Controllers
             return new ElevatorResponse(added);
         }
 
-        //A person requests that they be brought to a floor
+        /// <summary>
+        /// Adds a request to the elevator tasks
+        /// </summary>
+        /// <param name="floor"></param>
+        /// <returns></returns>
         [HttpPost("jobs/{floor}")]
         public ElevatorResponse AddElevatorJob(int floor)
         {
@@ -33,11 +37,15 @@ namespace ElevatorControlSystem.Controllers
             return new ElevatorResponse(floor);
         }
 
-        //A person requests that they be brought to a floor
+        /// <summary>
+        /// Gets the current floor of the elevator
+        /// </summary>
+        /// <param name="floor"></param>
+        /// <returns></returns>
         [HttpGet("jobs/{floor}")]
         public ElevatorResponse GetElevatorJob(int floor)
         {
-            _elevatorService.GetJob(floor);
+            _elevatorService.GetCurrentFloor();
 
             return new ElevatorResponse(floor);
         }

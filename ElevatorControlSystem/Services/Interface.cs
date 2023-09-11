@@ -4,6 +4,23 @@ namespace ElevatorControlSystem.Services
 {
     public interface IElevatorService
     {
-        public int AddJob(Direction direction, int floor);
+        /// <summary>
+        /// Adds a job to the elevator tasks. Takes a direction from outside the elevator
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="floor"></param>
+        /// <returns></returns>
+        int AddJob(Direction direction, int floor);
+
+
+        int AddJob(int floor);
+
+        int GetCurrentFloor();
+
+        int GetNextJob();
+
+        IEnumerable<int> GetAllJobs();
+
+        bool CompleteJob();
     }
 }

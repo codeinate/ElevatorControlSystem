@@ -24,24 +24,9 @@ namespace ElevatorControlSystem.Services
             return addJobToQueue(direction, floor);
         }
 
-        private static int addJobToQueue(Direction direction, int floor)
+        public int GetCurrentFloor()
         {
-            if (floor > topFloor)
-            {
-                return -1;
-            }
-
-            switch (direction)
-            {
-                case Direction.Up:
-                    upJobs.Add(floor);
-                    break;
-                case Direction.Down:
-                    downJobs.Add(floor);
-                    break;
-            }
-
-            return floor;
+            return currentFloor;
         }
 
         public int GetNextJob()
@@ -62,6 +47,25 @@ namespace ElevatorControlSystem.Services
         public bool CompleteJob()
         {
             return true;
+        }
+
+        private static int addJobToQueue(Direction direction, int floor)
+        {
+            if (floor > topFloor)
+            {
+                return -1;
+            }
+
+            switch (direction)
+            {
+                case Direction.Up:
+                    upJobs.Add(floor);
+                    break;
+                case Direction.Down:
+                    downJobs.Add(floor);
+                    break;
+            }
+            return floor;
         }
     }
 }
