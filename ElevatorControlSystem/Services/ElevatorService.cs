@@ -41,7 +41,16 @@ namespace ElevatorControlSystem.Services
         // TODO: Implement other error handling
         public ErrorOr<int> GetNextJob()
         {
-            return currentFloor;
+            List<int> allJobs = combineAllJobs();
+
+            Random rnd = new();
+
+            return allJobs[rnd.Next(allJobs.Count)];
+        }
+
+        public ErrorOr<IEnumerable<int>> GetAllJobs()
+        {
+            return combineAllJobs();
         }
 
         public ErrorOr<IEnumerable<int>> GetAllJobs()
@@ -62,6 +71,8 @@ namespace ElevatorControlSystem.Services
         public ErrorOr<bool> CompleteJob(int floor)
         {
             List<int> jobs = GetDirection();
+
+            currentFloor = floor;
 
             return jobs.Remove(floor);
         }
