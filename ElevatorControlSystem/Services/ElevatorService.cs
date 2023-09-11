@@ -6,21 +6,24 @@ namespace ElevatorControlSystem.Services
 {
     public class ElevatorService : IElevatorService
     {
+
         private static readonly int topFloor = 30;
 
-        private static int currentFloor = 0;
+        private static readonly int bottomFloor = -5;
 
-        private static Direction currentDirection = Direction.Up;
+        private Direction currentDirection = Direction.Up;
 
-        private static readonly List<int> upJobs = new();
+        private int currentFloor = 0;
+
+        private readonly List<int> upJobs = new();
         
-        private static readonly List<int> downJobs = new();
+        private readonly List<int> downJobs = new();
 
         public ErrorOr<bool> AddJob(Direction direction, int floor)
         {
             var added = addJobToQueue(direction, floor);
 
-            if (added == -1) return Errors.Elevator.OutofRange;
+            if (added == null) return Errors.Elevator.OutofRange;
 
             return true;
         }
@@ -35,6 +38,7 @@ namespace ElevatorControlSystem.Services
             return currentFloor;
         }
 
+        // TODO: Implement other error handling
         public ErrorOr<int> GetNextJob()
         {
             List<int> allJobs = combineAllJobs();
@@ -49,12 +53,13 @@ namespace ElevatorControlSystem.Services
             return combineAllJobs();
         }
 
-        private static List<int> combineAllJobs()
+        private List<int> combineAllJobs()
         {
             List<int> allJobs = new();
 
             allJobs.AddRange(upJobs);
             allJobs.AddRange(downJobs);
+
             return allJobs;
         }
 
@@ -67,11 +72,11 @@ namespace ElevatorControlSystem.Services
             return jobs.Remove(floor);
         }
 
-        private static int addJobToQueue(Direction direction, int floor)
+        private int? addJobToQueue(Direction direction, int floor)
         {
-            if (floor > topFloor)
+            if (floor > topFloor || floor < bottomFloor)
             {
-                return -1;
+                return null;
             }
 
             List<int> jobs = GetDirection(direction);
@@ -80,18 +85,15 @@ namespace ElevatorControlSystem.Services
             return floor;
         }
 
-        private static List<int> GetDirection(Direction? direction = null)
+        private List<int> GetDirection(Direction? direction = null)
         {
             direction ??= currentDirection;
 
-            switch (direction)
+            return direction switch
             {
-                case Direction.Down:
-                    return downJobs;
-                case Direction.Up:
-                default: 
-                    return upJobs;
-            }
+                Direction.Down => downJobs,
+                _ => upJobs,
+            };
         }
     }
 }
