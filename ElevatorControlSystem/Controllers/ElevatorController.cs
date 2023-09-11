@@ -24,9 +24,8 @@ namespace ElevatorControlSystem.Controllers
         /// <summary>
         /// Adds a new job with the intended direction. Designed to be used from outside the elevator.
         /// </summary>
-        /// <param name="direction"></param>
-        /// <param name="floor"></param>
-        /// <returns></returns>
+        /// <param name="direction">The direction the user requested the elevator to go</param>
+        /// <param name="floor">The floor the user is currently on</param>
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [HttpPost("service/{floor}")]
@@ -42,8 +41,7 @@ namespace ElevatorControlSystem.Controllers
         /// <summary>
         /// Adds a new job from within the elevator.
         /// </summary>
-        /// <param name="floor"></param>
-        /// <returns></returns>
+        /// <param name="floor">The floor to be added to the queue</param>
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [HttpPost("jobs/{floor}")]
@@ -59,8 +57,7 @@ namespace ElevatorControlSystem.Controllers
         /// <summary>
         /// Retrieves the current floor the elevator is on.
         /// </summary>
-        /// <param name="floor"></param>
-        /// <returns></returns>
+        /// <returns>the int value of the floor</returns>
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [HttpGet("jobs/{floor}")]
@@ -76,7 +73,7 @@ namespace ElevatorControlSystem.Controllers
         /// <summary>
         /// Elevator car requests all floors that it’s current passengers are servicing
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IEnumerable<int> of all the floors</int></returns>
         [ProducesResponseType(typeof(IEnumerable<int>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [HttpGet("jobs/all")]
@@ -90,7 +87,7 @@ namespace ElevatorControlSystem.Controllers
         }
 
         /// <summary>
-        /// requests the next floor the elevator needs to service
+        /// Requests the next floor the elevator needs to service
         /// </summary>
         /// <returns></returns>
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
@@ -108,7 +105,7 @@ namespace ElevatorControlSystem.Controllers
         /// <summary>
         /// Elevator sends a request that it has reached a floor and completed a job
         /// </summary>
-        /// <param name="floor"></param>
+        /// <param name="floor">The floor that is complete in the queue</param>
         /// <returns></returns>
         [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
