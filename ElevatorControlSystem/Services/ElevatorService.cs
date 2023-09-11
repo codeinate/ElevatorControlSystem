@@ -30,27 +30,27 @@ namespace ElevatorControlSystem.Services
             return AddJob(currentDirection, floor);
         }
 
-        public int GetCurrentFloor()
+        public ErrorOr<int> GetCurrentFloor()
         {
             return currentFloor;
         }
 
-        public int GetNextJob()
+        public ErrorOr<int> GetNextJob()
         {
             return currentFloor;
         }
 
-        public IEnumerable<int> GetAllJobs()
+        public ErrorOr<IEnumerable<int>> GetAllJobs()
         {
             List<int> allJobs = new();
 
             allJobs.AddRange(upJobs);
             allJobs.AddRange(downJobs);
 
-            return allJobs.Distinct();
+            return allJobs;
         }
 
-        public bool CompleteJob(int floor)
+        public ErrorOr<bool> CompleteJob(int floor)
         {
             List<int> jobs = GetDirection();
 

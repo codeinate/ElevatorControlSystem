@@ -13,7 +13,7 @@ namespace ElevatorControlSystem.Services
 
         ErrorOr<int> GetNextJob();
 
-        IEnumerable<int> GetAllJobs();
+        ErrorOr<IEnumerable<int>> GetAllJobs();
 
         ErrorOr<bool> CompleteJob(int floor);
     }
