@@ -1,5 +1,6 @@
 ﻿using ElevatorControlSystem.Controllers.Models;
 using ElevatorControlSystem.Services;
+using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElevatorControlSystem.Controllers
@@ -16,7 +17,7 @@ namespace ElevatorControlSystem.Controllers
         }
 
         [HttpPost("service/{floor}")]
-        public ElevatorResponse EnqueueNewJob(Direction direction, int floor)
+        public ErrorOr<ElevatorResponse> EnqueueNewJob(Direction direction, int floor)
         {
             int added = _elevatorService.AddJob(direction, floor);
 
@@ -24,10 +25,19 @@ namespace ElevatorControlSystem.Controllers
         }
 
         //A person requests that they be brought to a floor
-        [HttpPost("job/{floor}")]
+        [HttpPost("jobs/{floor}")]
         public ElevatorResponse AddElevatorJob(int floor)
         {
             _elevatorService.AddJob(floor);
+
+            return new ElevatorResponse(floor);
+        }
+
+        //A person requests that they be brought to a floor
+        [HttpGet("jobs/{floor}")]
+        public ElevatorResponse GetElevatorJob(int floor)
+        {
+            _elevatorService.GetJob(floor);
 
             return new ElevatorResponse(floor);
         }
