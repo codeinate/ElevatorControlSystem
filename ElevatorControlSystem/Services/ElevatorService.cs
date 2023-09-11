@@ -4,11 +4,11 @@ namespace ElevatorControlSystem.Services
 {
     public class ElevatorService : IElevatorService
     {
-        private static int topFloor = 30;
+        private static readonly int topFloor = 30;
 
-        private static int currentFloor = 0;
+        private static readonly int currentFloor = 0;
 
-        private static Direction direction = Direction.Up; 
+        private static readonly Direction direction = Direction.Up;
 
         private static readonly List<int> upJobs = new();
         
