@@ -14,3 +14,6 @@ The Api will run in http://localhost:8080/
 
 You can find swagger documentation at http://localhost:8080/swagger/index.html
 
+### Purpose
+
+This "Mock" Api is for a job application and not meant to be used in the real world
