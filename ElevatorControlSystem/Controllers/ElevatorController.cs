@@ -24,26 +24,16 @@ namespace ElevatorControlSystem.Controllers
             return new ElevatorResponse(added);
         }
 
-        /// <summary>
-        /// Adds a request to the elevator tasks
-        /// </summary>
-        /// <param name="floor"></param>
-        /// <returns></returns>
         [HttpPost("jobs/{floor}")]
-        public ElevatorResponse AddElevatorJob(int floor)
+        public ErrorOr<ElevatorResponse> AddElevatorJob(int floor)
         {
             _elevatorService.AddJob(floor);
 
             return new ElevatorResponse(floor);
         }
 
-        /// <summary>
-        /// Gets the current floor of the elevator
-        /// </summary>
-        /// <param name="floor"></param>
-        /// <returns></returns>
         [HttpGet("jobs/{floor}")]
-        public ElevatorResponse GetElevatorJob(int floor)
+        public ErrorOr<ElevatorResponse> GetElevatorJob(int floor)
         {
             _elevatorService.GetCurrentFloor();
 
@@ -52,21 +42,21 @@ namespace ElevatorControlSystem.Controllers
 
         //An elevator car requests all floors that it’s current passengers are servicing(e.g.to light up the buttons that show which floors the car is going to)
         [HttpGet("jobs/all")]
-        public IEnumerable<int> GetAllElevatorJobs()
+        public ErrorOr<IEnumerable<int>>  GetAllElevatorJobs()
         {
             return _elevatorService.GetAllJobs();
         }
 
         //An elevator car requests the next floor it needs to service
         [HttpGet("jobs/next")]
-        public ElevatorResponse GetNextElevatorJob()
+        public ErrorOr<ElevatorResponse> GetNextElevatorJob()
         {
             return new ElevatorResponse();
         }
 
         //An elevator car requests the next floor it needs to service
         [HttpPut("jobs/complete")]
-        public ElevatorResponse ElevatorCompleteJob()
+        public ErrorOr<ElevatorResponse> ElevatorCompleteJob()
         {
             _elevatorService.CompleteJob();
 

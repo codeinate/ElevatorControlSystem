@@ -12,7 +12,6 @@ namespace ElevatorControlSystem.Services
         /// <returns></returns>
         int AddJob(Direction direction, int floor);
 
-
         int AddJob(int floor);
 
         int GetCurrentFloor();
