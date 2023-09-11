@@ -4,6 +4,8 @@ Elevator Control system is an API to interact with an Elevator from both within 
 
 ## Install and Run
 
+Make sure you have Dotnet 7 installed
+
 Download the repository and navigate to within the folder to ElevatorControlSystem/ElevatorControlSystem.
 
 In a terminal, run the command ```dotnet run```
