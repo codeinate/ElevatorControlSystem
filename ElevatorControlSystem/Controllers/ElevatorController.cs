@@ -58,10 +58,9 @@ namespace ElevatorControlSystem.Controllers
         /// Retrieves the current floor the elevator is on.
         /// </summary>
         /// <returns>the int value of the floor</returns>
-        [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [HttpGet("jobs/{floor}")]
-        public IActionResult GetElevatorJob()
+        [HttpGet("jobs/current")]
+        public IActionResult GetCurrentElevatorJob()
         {
             ErrorOr<int> result = _elevatorService.GetCurrentFloor();
 

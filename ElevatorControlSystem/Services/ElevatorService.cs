@@ -8,9 +8,9 @@ namespace ElevatorControlSystem.Services
     {
         private static readonly int topFloor = 30;
 
-        private static readonly int currentFloor = 0;
+        private static int currentFloor = 0;
 
-        private static readonly Direction currentDirection = Direction.Up;
+        private static Direction currentDirection = Direction.Up;
 
         private static readonly List<int> upJobs = new();
         
@@ -37,22 +37,32 @@ namespace ElevatorControlSystem.Services
 
         public ErrorOr<int> GetNextJob()
         {
-            return currentFloor;
+            List<int> allJobs = combineAllJobs();
+
+            Random rnd = new();
+
+            return allJobs[rnd.Next(allJobs.Count)];
         }
 
         public ErrorOr<IEnumerable<int>> GetAllJobs()
+        {
+            return combineAllJobs();
+        }
+
+        private static List<int> combineAllJobs()
         {
             List<int> allJobs = new();
 
             allJobs.AddRange(upJobs);
             allJobs.AddRange(downJobs);
-
             return allJobs;
         }
 
         public ErrorOr<bool> CompleteJob(int floor)
         {
             List<int> jobs = GetDirection();
+
+            currentFloor = floor;
 
             return jobs.Remove(floor);
         }

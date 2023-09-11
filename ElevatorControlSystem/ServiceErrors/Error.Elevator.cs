@@ -8,7 +8,7 @@ namespace ElevatorControlSystem.ServiceErrors
         {
             public static Error OutofRange => Error.NotFound(
                 code: "Floor out of range",
-                description: "The request");
+                description: "The request is out of range");
 
         }
     }
