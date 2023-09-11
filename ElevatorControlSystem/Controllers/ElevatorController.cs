@@ -5,17 +5,26 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ElevatorControlSystem.Controllers
 {
+    /// <summary>
+    /// Api to control an elevator
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class ElevatorController : ControllerBase
     {
-        ElevatorService _elevatorService;
+        readonly IElevatorService _elevatorService;
 
-        public ElevatorController(ElevatorService elevatorService)
+        public ElevatorController(IElevatorService elevatorService)
         {
             _elevatorService = elevatorService;
         }
 
+        /// <summary>
+        /// Adds a new job with the intended direction. Designed to be used from outside the elevator.
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="floor"></param>
+        /// <returns></returns>
         [HttpPost("service/{floor}")]
         public ErrorOr<ElevatorResponse> EnqueueNewJob(Direction direction, int floor)
         {
@@ -24,6 +33,11 @@ namespace ElevatorControlSystem.Controllers
             return new ElevatorResponse(added);
         }
 
+        /// <summary>
+        /// Adds a new job from within the elevator.
+        /// </summary>
+        /// <param name="floor"></param>
+        /// <returns></returns>
         [HttpPost("jobs/{floor}")]
         public ErrorOr<ElevatorResponse> AddElevatorJob(int floor)
         {
@@ -32,6 +46,11 @@ namespace ElevatorControlSystem.Controllers
             return new ElevatorResponse(floor);
         }
 
+        /// <summary>
+        /// Retrieves the current floor the elevator is on.
+        /// </summary>
+        /// <param name="floor"></param>
+        /// <returns></returns>
         [HttpGet("jobs/{floor}")]
         public ErrorOr<ElevatorResponse> GetElevatorJob(int floor)
         {
@@ -40,25 +59,35 @@ namespace ElevatorControlSystem.Controllers
             return new ElevatorResponse(floor);
         }
 
-        //An elevator car requests all floors that it’s current passengers are servicing(e.g.to light up the buttons that show which floors the car is going to)
+        /// <summary>
+        /// Elevator car requests all floors that it’s current passengers are servicing
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("jobs/all")]
-        public ErrorOr<IEnumerable<int>>  GetAllElevatorJobs()
+        public IEnumerable<int>  GetAllElevatorJobs()
         {
             return _elevatorService.GetAllJobs();
         }
 
-        //An elevator car requests the next floor it needs to service
+        /// <summary>
+        /// requests the next floor the elevator needs to service
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("jobs/next")]
         public ErrorOr<ElevatorResponse> GetNextElevatorJob()
         {
             return new ElevatorResponse();
         }
 
-        //An elevator car requests the next floor it needs to service
-        [HttpPut("jobs/complete")]
-        public ErrorOr<ElevatorResponse> ElevatorCompleteJob()
+        /// <summary>
+        /// Elevator sends a request that it has reached a floor and completed a job
+        /// </summary>
+        /// <param name="floor"></param>
+        /// <returns></returns>
+        [HttpDelete("jobs/complete")]
+        public ErrorOr<ElevatorResponse> ElevatorCompleteJob(int floor)
         {
-            _elevatorService.CompleteJob();
+            _elevatorService.CompleteJob(floor);
 
             return new ElevatorResponse();
         }

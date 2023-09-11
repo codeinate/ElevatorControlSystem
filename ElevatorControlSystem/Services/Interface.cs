@@ -20,6 +20,6 @@ namespace ElevatorControlSystem.Services
 
         IEnumerable<int> GetAllJobs();
 
-        bool CompleteJob();
+        bool CompleteJob(int floor);
     }
 }

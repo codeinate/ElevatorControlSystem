@@ -8,7 +8,7 @@ namespace ElevatorControlSystem.Services
 
         private static readonly int currentFloor = 0;
 
-        private static readonly Direction direction = Direction.Up;
+        private static readonly Direction currentDirection = Direction.Up;
 
         private static readonly List<int> upJobs = new();
         
@@ -16,7 +16,7 @@ namespace ElevatorControlSystem.Services
 
         public int AddJob(int floor)
         {
-            return AddJob(direction, floor);
+            return AddJob(currentDirection, floor);
         }
 
         public int AddJob(Direction direction, int floor)
@@ -44,9 +44,11 @@ namespace ElevatorControlSystem.Services
             return allJobs.Distinct();
         }
 
-        public bool CompleteJob()
+        public bool CompleteJob(int floor)
         {
-            return true;
+            List<int> jobs = GetDirection();
+
+            return jobs.Remove(floor);
         }
 
         private static int addJobToQueue(Direction direction, int floor)
@@ -56,16 +58,24 @@ namespace ElevatorControlSystem.Services
                 return -1;
             }
 
+            List<int> jobs = GetDirection(direction);
+            jobs.Add(floor);
+
+            return floor;
+        }
+
+        private static List<int> GetDirection(Direction? direction = null)
+        {
+            direction ??= currentDirection;
+
             switch (direction)
             {
-                case Direction.Up:
-                    upJobs.Add(floor);
-                    break;
                 case Direction.Down:
-                    downJobs.Add(floor);
-                    break;
+                    return downJobs;
+                case Direction.Up:
+                default: 
+                    return upJobs;
             }
-            return floor;
         }
     }
 }
